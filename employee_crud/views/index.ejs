@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Employee List</title>
+</head>
+<body>
+    <h1>Employee List</h1>
+    <a href="/new">Add Employee</a>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Department</th>
+            <th>Skills</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+        <% employees.forEach(employee => { %>
+        <tr>
+            <td><%= employee.name %></td>
+            <td><%= employee.email %></td>
+            <td><%= employee.gender %></td>
+            <td><%= employee.department %></td>
+            <td><%= employee.skills.join(', ') %></td>
+            <td><%= employee.address %></td>
+            <td>
+                <a href="/edit/<%= employee._id %>">Edit</a>
+                <form action="/employees/<%= employee._id %>?_method=DELETE" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        <% }) %>
+    </table>
+</body>
+</html>

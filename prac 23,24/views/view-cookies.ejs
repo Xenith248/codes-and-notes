@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Cookies</title>
+</head>
+<body>
+    <h1>Stored Cookies</h1>
+
+    <% if (Object.keys(cookies).length === 0) { %>
+        <p>No cookies found.</p>
+    <% } else { %>
+        <p><strong>Name:</strong> <%= cookies.name || "Not Set" %></p>
+        <p><strong>Age:</strong> <%= cookies.age || "Not Set" %></p>
+    <% } %>
+
+    <br>
+    <a href="/">Set New Cookies</a>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Form</title>
+</head>
+<body>
+    <!-- Main heading for the page -->
+    <h1>Employee Form</h1>
+
+    <!-- The form where user inputs their information -->
+    <form id="employeeForm">
+        <!-- Input for Name -->
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <!-- Input for Email -->
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+
+        <!-- Radio buttons for Gender -->
+        <label>Gender:</label><br>
+        <input type="radio" id="male" name="gender" value="Male">
+        <label for="male">Male</label><br>
+        <input type="radio" id="female" name="gender" value="Female">
+        <label for="female">Female</label><br>
+        <input type="radio" id="other" name="gender" value="Other">
+        <label for="other">Other</label><br><br>
+
+        <!-- Dropdown menu for selecting Department -->
+        <label for="department">Department:</label>
+        <select id="department" name="department">
+            <option value="">--Select--</option>
+            <option value="HR">HR</option>
+            <option value="IT">IT</option>
+            <option value="Finance">Finance</option>
+            <option value="Marketing">Marketing</option>
+        </select><br><br>
+
+        <!-- Checkboxes for Skills -->
+        <label>Skills:</label><br>
+        <input type="checkbox" id="skill1" name="skills" value="JavaScript">
+        <label for="skill1">JavaScript</label><br>
+        <input type="checkbox" id="skill2" name="skills" value="Python">
+        <label for="skill2">Python</label><br>
+        <input type="checkbox" id="skill3" name="skills" value="SQL">
+        <label for="skill3">SQL</label><br>
+        <input type="checkbox" id="skill4" name="skills" value="Excel">
+        <label for="skill4">Excel</label><br><br>
+
+        <!-- Text area for Address -->
+        <label for="address">Address:</label><br>
+        <textarea id="address" name="address" rows="4" cols="50"></textarea><br><br>
+
+        <!-- Button to submit the form -->
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+
+    <!-- Section to display the output -->
+    <div id="output" style="display: none;">
+        <h2>Submitted Data:</h2>
+        <p><strong>Name:</strong> <span id="outputName"></span></p>
+        <p><strong>Email:</strong> <span id="outputEmail"></span></p>
+        <p><strong>Gender:</strong> <span id="outputGender"></span></p>
+        <p><strong>Department:</strong> <span id="outputDepartment"></span></p>
+        <p><strong>Skills:</strong> <span id="outputSkills"></span></p>
+        <p><strong>Address:</strong> <span id="outputAddress"></span></p>
+    </div>
+
+    <!-- JavaScript to handle the form submission -->
+    <script>
+        function submitForm() {
+            // Get the form element
+            const form = document.getElementById('employeeForm');
+
+            // Retrieve the values entered in the form fields
+            const name = form.name.value; // Name input value
+            const email = form.email.value; // Email input value
+            const gender = form.gender.value; // Selected gender (radio buttons)
+            const department = form.department.value; // Selected department (dropdown)
+
+            // Get selected skills (checkboxes)
+            const skills = Array.from(form.skills)
+                .filter(skill => skill.checked) // Filter only checked boxes
+                .map(skill => skill.value) // Extract the values of checked boxes
+                .join(', '); // Combine the skills into a comma-separated string
+
+            const address = form.address.value; // Address text area value
+
+            // Display the retrieved values in the output section
+            document.getElementById('outputName').textContent = name;
+            document.getElementById('outputEmail').textContent = email;
+            document.getElementById('outputGender').textContent = gender;
+            document.getElementById('outputDepartment').textContent = department;
+            document.getElementById('outputSkills').textContent = skills;
+            document.getElementById('outputAddress').textContent = address;
+
+            // Make the output section visible
+            document.getElementById('output').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
