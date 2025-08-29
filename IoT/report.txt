@@ -1,0 +1,4 @@
+Report on, aurdino, rasberrry pi, 
+(power consumption, what secnario, which application, programming ways), 
+microcontroller & micro processor(woriking, difference),
+iot devices used
