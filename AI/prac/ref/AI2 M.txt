@@ -1,0 +1,89 @@
+class Environment:
+    def __init__(self, N, entry_point, gold_location, charging_station):
+        self.N = N  # Grid size N x N
+        self.entry_point = entry_point  # Entry point location
+        self.gold_location = gold_location  # Gold location (unknown to agent initially)
+        self.charging_station = charging_station  # Charging station location
+        self.grid = [[False for _ in range(N)] for _ in range(N)]  # Explored grid
+        self.agent_position = entry_point
+        self.visited = set()  # Keep track of visited rooms
+
+    def is_within_bounds(self, x, y):
+        return 0 <= x < self.N and 0 <= y < self.N
+
+    def mark_visited(self, x, y):
+        self.visited.add((x, y))
+        self.grid[x][y] = True
+
+    def is_gold_found(self, x, y):
+        return (x, y) == self.gold_location
+
+    def is_charging_station(self, x, y):
+        return (x, y) == self.charging_station
+
+class Agent:
+    def __init__(self, env, battery_capacity):
+        self.env = env
+        self.battery = battery_capacity  # Full battery capacity
+        self.max_battery = battery_capacity  # Store max battery capacity
+        self.steps_taken = 0  # Total steps taken
+        self.position = env.entry_point  # Current position of the agent
+        self.path_memory = []  # To store the path for backtracking
+        self.has_gold = False  # Gold status
+
+    def move(self, dx, dy):
+        new_x, new_y = self.position[0] + dx, self.position[1] + dy
+        if self.env.is_within_bounds(new_x, new_y):
+            self.position = (new_x, new_y)
+            self.steps_taken += 1
+            self.env.mark_visited(new_x, new_y)
+            self.battery -= 1
+            self.path_memory.append(self.position)
+
+            if self.env.is_gold_found(new_x, new_y):
+                self.has_gold = True
+                print(f"Gold found at {self.position}!")
+            if self.battery == 0:
+                self.return_to_charging()
+
+        else:
+            print(f"Hit a wall at ({new_x}, {new_y}), trying a different direction.")
+
+    def return_to_charging(self):
+        print(f"Returning to charging station from {self.position}")
+        # Simulate returning to the charging station
+        self.position = self.env.charging_station
+        self.battery = self.max_battery
+        self.steps_taken += len(self.path_memory)
+        self.path_memory = []
+
+    def explore(self):
+        while not self.has_gold:
+            # Simple exploration, first tries moving east, then south, etc.
+            if not self.env.is_within_bounds(self.position[0] + 1, self.position[1]):  # Try moving east
+                self.move(1, 0)
+            elif not self.env.is_within_bounds(self.position[0], self.position[1] + 1):  # Try moving south
+                self.move(0, 1)
+            elif not self.env.is_within_bounds(self.position[0] - 1, self.position[1]):  # Try moving west
+                self.move(-1, 0)
+            elif not self.env.is_within_bounds(self.position[0], self.position[1] - 1):  # Try moving north
+                self.move(0, -1)
+            
+            if self.has_gold:
+                print(f"Returning to entry point from {self.position}")
+                self.return_to_charging()
+                break
+
+if __name__ == "__main__":
+    N = 5  # Grid size
+    X = 10  # Battery capacity
+    entry_point = (0, 0)
+    gold_location = (3, 3)
+    charging_station = (0, 0)
+
+    env = Environment(N, entry_point, gold_location, charging_station)
+    agent = Agent(env, X)
+
+    agent.explore()
+
+    print(f"Total steps taken: {agent.steps_taken}")
